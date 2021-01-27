@@ -1,0 +1,21 @@
+{% extends 'adminpages/admin_base.html' %}
+
+{% block content %}
+
+<hr>
+
+<hr>
+<table>
+	<div class="form-group">
+	<form action = "#" method="post">
+		{% csrf_token %}
+		{{form}}
+
+					<input type="submit" value="update">
+
+	</form>
+
+	</div>
+
+</table>
+{% endblock content %}

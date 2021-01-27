@@ -1,0 +1,21 @@
+{% extends 'store/main.html'%}
+<hr>
+{% block content %}
+<hr>
+
+<hr>
+
+
+<hr>
+{% for category in all_categories %}
+
+<h2>{{category.title}}</h2>
+
+
+
+{% endfor %}
+
+
+{% block footer %}{% include 'store/footer.html'%} {% endblock footer%}
+
+{% endblock %}

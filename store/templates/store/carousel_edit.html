@@ -1,0 +1,16 @@
+{% extends 'store/main.html' %}
+
+{% block content %}
+
+<hr>
+
+<hr>
+<form class = "site-form" action = "#" method ="post">
+	{% csrf_token %}
+	{{ form }}
+<hr>
+
+	<input class="btn btn-success" type="submit" value ="Submit">
+
+</form>
+{% endblock %}

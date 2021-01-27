@@ -1,0 +1,40 @@
+{% extends "store/main.html" %}
+
+{% block content %}
+
+<hr>
+
+<hr>
+<h1>  </h1>
+
+<form class = "site-form" action = "/accounts/signup/" method ="post">
+	{% csrf_token %}
+	{{ form }}
+	<input type="submit" value ="Signup">
+
+</form>
+
+
+<hr>
+
+<h1> Don't have an Account? Signup Here</h1>
+
+<hr>
+
+
+<div class="row">
+	<form action="/accounts/signup">
+    <div class="col-lg-6">
+        <div class="box-element" id="form-wrapper">
+				{% csrf_token %}
+
+				{{ form }}
+
+				<input type="submit" class="btn btn-success btn-block" value ="Signup">
+		</div>
+	</div>
+	</form>
+</div>
+
+
+{% endblock %}
