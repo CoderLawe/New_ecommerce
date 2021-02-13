@@ -20,6 +20,14 @@ class Customer(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def orders(self):
+        order_count = self.order_set.all().count()
+        return str(order_count)
+
+   
+    
+
 class Category(models.Model):
     CATEGORY = (
         ('Indoor', 'Indoor'),
@@ -53,7 +61,7 @@ class Product(models.Model):
 
     @property
     def imageURL(self):
-        try:
+        try:                     #problem might be here?
             url = self.image.url
 
         except:
@@ -72,7 +80,7 @@ class Order(models.Model):
     date_ordered = models.DateTimeField(auto_now_add=True)
     complete = models.BooleanField(default=False, null=True, blank=False)
     transaction_id = models.CharField(max_length=200, null=True)
-    status = models.CharField(max_length=200, null=True, choices=STATUS, default="Pending")
+    status = models.CharField(max_length=200, null=True, choices=STATUS, default='Pending')
     
 
     def __str__(self):
@@ -130,3 +138,6 @@ class CarouselData(models.Model):
 
     def __str__(self):
         return self.body
+
+
+

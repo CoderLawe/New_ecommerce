@@ -21,12 +21,12 @@
         </tr>
     </thead>
 
-    {% for customer in customers %}
+    {% for customer in shipping %}
 <tr>
                         <td>{{forloop.counter}}</td>
-                        <td>{{customer.name}}</td>
-                        <td>{{customer.email}}</td>
-                        <td>Insert Backend Lawe</td>
+						<td><a href="{% url 'customer_details' customer.pk %}">{{customer.customer.name}}</a></td>
+                        <td>{{customer.customer.name}}</td>
+                        <td>{{customer.customer.shipping}}</td>
 
                     </tr>
     {% endfor %}

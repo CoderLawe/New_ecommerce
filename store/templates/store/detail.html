@@ -1,6 +1,7 @@
 {% extends 'store/main.html'%}
 {% load static %}
 {% block content %}
+
 <!--
 <hr>
 <h1> Product details for {{products.name}}</h1>
@@ -142,6 +143,8 @@ $(document).ready(function () {
                 <img src={{products.imageURL}}
                   class="img-fluid z-depth-1">
             </figure>
+
+            
            
             
           </div>
@@ -238,7 +241,7 @@ $(document).ready(function () {
     <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Features</a>
   </li>
   <li class="nav-item" role="presentation">
-    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Contact</a>
+    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Reviews</a>
   </li>
 </ul>
 <div class="tab-content" id="myTabContent">
@@ -250,6 +253,8 @@ $(document).ready(function () {
 <div class='container'>
 
 <div class="row">
+<br>
+
  <div class="col-md-3">
   <span class="sr-only">Four out of Five Stars</span>
   <span class="fas fa-star" aria-hidden="true"></span>
@@ -269,13 +274,18 @@ $(document).ready(function () {
 </div>  
   
 Reviews</div>
+
+
 </div>
 
+
 <!--Nav tab end-->
+
+
     </div>
   </div>
 
-
+<br>
 </section>
 
 <!--Section: Block Content-->

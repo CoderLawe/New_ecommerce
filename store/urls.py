@@ -21,7 +21,13 @@ urlpatterns = [
 
     path('update_product/<str:pk>/', views.update_product, name="update_product"),
 
-    path('update_order/<str:key>/', views.update_order, name="update_order"),
+
+    path('update_order/<str:pk>/', views.update_order, name="update_order"),
+
+    path('customer_details/<str:pk>/', views.customer_view_details, name="customer_details"),
+
+
+    #path('update_order/<str:key>/', views.update_order, name="update_order"),
 
     path('delete_order/<str:pk>/', views.delete_order, name="delete_order"),
 
@@ -38,12 +44,23 @@ urlpatterns = [
 
     path("admin-orders/", admin_orders.as_view(), name="admin_orders"),
 
+    path("admin-delivering/", views.out_for_delivery, name="delivering"),
+
+    path("admin-delivered/", views.delivered, name="delivered"),
+
+
+
+
+
     path('update_item/', views.updateItem, name="update_item"),
     path('update_guest_item/', views.updateGuest_item, name="update_item"),
 
     path('carousel_edit/', views.carousel_detail, name="carousel"),
 
     path('search/', views.Search, name="search"),
+
+    path('chart/', views.ClubChartView.as_view(), name="chart"),
+
 
     re_path(r'^(?P<slug>[\w-]+)/$', views.product_detail, name='detail'),
 
@@ -55,6 +72,11 @@ urlpatterns = [
 
     path("admin-order/<int:pk>/", admin_ordering.as_view(),
          name="admindetail"),
+
+    path('export/', views.Export, name="export"),
+
+        #Excel Stuff
+    
 
 
 ]

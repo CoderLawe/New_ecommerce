@@ -1,6 +1,7 @@
 {% extends 'store/main.html'%}
 {% load static %}
 {% block content %}
+
 <br>
 
 <div class="row">
@@ -225,4 +226,5 @@ var url = "/process_order/"
 	    }
 
 </script>
+{% block footer %}{% include 'store/footer.html'%} {% endblock footer%}
 {% endblock content %}

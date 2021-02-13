@@ -1,6 +1,8 @@
 from django.views.generic import View, TemplateView, CreateView, FormView, DetailView, ListView
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import user_passes_test
+from django.http import HttpResponse
+
 
 from django.db.models import Q
 from django.urls import reverse_lazy
@@ -8,6 +10,7 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse
 import json
 import datetime
+import csv
 
 from .models import *
 from .utils import cookieCart, cartData, guestOrder
@@ -47,7 +50,7 @@ def store(request):
 
     print(products, cartItems)
     print(carousel_content)
-    return render(request, 'store/store.html',
+    return render(request, 'store/index.html',
                   {'products': products, 'cartItems': cartItems, 'carousel_content': carousel_content})
 
 
@@ -208,8 +211,8 @@ def update_product(request, pk):
 
     return render(request, 'adminpages/product_create.html', {'form': form})
 
-def update_order(request, key):
-    order = Order.objects.get(id=key)
+def update_order(request, pk):
+    order = Order.objects.get(id=pk)
     form = OrderForm(instance=order)
 
     if request.method == 'POST':
@@ -291,12 +294,40 @@ def home_admin(request):
                   {'orders':orders, 'total_orders': total_orders, 'delivered': delivered,'pending':pending})
 
 
+def out_for_delivery(request):
+    all_orders = Order.objects.all()
+    delivering = all_orders.filter(status="Out for delivery")
+
+    total_orders = all_orders.count()
+    delivered = all_orders.filter(complete='True').count()
+    pending = all_orders.filter(status='Pending').count()
+    context = {'delivering':delivering,'total_orders': total_orders, 'delivered': delivered, "pending": pending }
+
+    return render(request,'adminpages/admin_outfordelivery.html',context)
+
+
+def delivered(request):
+    all_orders = Order.objects.all()
+    done = all_orders.filter(status="Delivered")
+
+    total_orders = all_orders.count()
+    delivered = all_orders.filter(complete='True').count()
+    pending = all_orders.filter(status='Pending').count()
+    context = {'done':done,'total_orders': total_orders, 'delivered': delivered, "pending": pending }
+
+    return render(request,'adminpages/admin_delivered.html',context)
+
 class AdminHomeView(AdminRequiredMixin, TemplateView):
     template_name = "adminpages/admin_home_page.html"
 
     def get(self, request, *args, **kwargs):
         all_orders = Order.objects.all()
         pending_orders = Order.objects.filter(status= "Pending")
+        pending = Order.objects.filter(status = "Pending")
+        qs = OrderItem.objects.all()
+        #order_items = Order.get_cart_items(self)
+        
+
 
 
         total_orders = all_orders.count()
@@ -304,9 +335,9 @@ class AdminHomeView(AdminRequiredMixin, TemplateView):
         pending = all_orders.filter(status='Pending').count()
 
         context = {
-            "all_orders": all_orders, 'total_orders': total_orders, 'delivered': delivered, "pending": pending,"pending_orders":pending_orders
+            "all_orders": all_orders, 'total_orders': total_orders, 'delivered': delivered, "pending": pending,"pending_orders":pending_orders,'qs':qs
         }
-        return render(request, "adminpages/admin_home_page.html", context)
+        return render(request, "adminpages/admin_home_new.html", context)
 
 
 class AdminOrderDetailView(AdminRequiredMixin, DetailView):
@@ -337,13 +368,20 @@ class admin_ordering(AdminRequiredMixin, TemplateView):
 class view_customer(AdminRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         customers = Customer.objects.all()
+        shipping = ShippingAddress.objects.all()
         context = {
-            "customers": customers
+            "customers": customers,
+            "shipping":shipping
         }
         return render(request, "adminpages/customer_view.html", context)
 
 
+def customer_view_details(request, pk):
+    shipping = ShippingAddress.objects.get(id=pk)
 
+   
+
+    return render(request, 'adminpages/customer_view_details.html', {'shipping': shipping})
 # def customer_view(request):
 
 # customers = Customer.objects.all()
@@ -368,5 +406,31 @@ class admin_orders(AdminRequiredMixin, TemplateView):
             
         }
         return render(request, "adminpages/admin_orders.html", context)
+
+def Export(request):
+    response = HttpResponse(content_type ='text/csv')
+
+    writer = csv.writer(response)
+    writer.writerow(['product','quantity'])
+
+    order = Order.objects.all
+    products = Product.objects.get('name')
+
+    for orders in Product.objects.all(), OrderItem.objects.all(), Product.objects.all().values_list('name','quantity'):
+
+        writer.writerow(orders)
+        print (orders)
+    response['content-Disposition'] = 'attachment; filename="orders.csv"'
+
+    return response
+
+class ClubChartView(TemplateView):
+    template_name = 'adminpages/chart.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["qs"] = OrderItem.objects.all() 
+        return context
+
 
 
